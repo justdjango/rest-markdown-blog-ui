@@ -15,7 +15,7 @@ const PostDetail = () => {
         async function fetchData() {
             setLoading(true);
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/api/post/${postSlug}`);
+                const res = await axios.get(`http://127.0.0.1:8000/api/posts/${postSlug}`);
                 setPost(res.data)
                 setLoading(false)
             } catch (error) {
