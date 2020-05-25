@@ -4,9 +4,10 @@ import ReactMarkdown from 'react-markdown'
 import axios from "axios"
 import Loader from '../components/Loader';
 import Message from '../components/Message'
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import { api } from '../api';
 import { useFetch, history } from '../helpers';
+import { authAxios } from '../services';
 
 const DeleteModal = ({title, postSlug, thumbnail}) => {
   const [error, setError] = useState(null)
@@ -14,13 +15,8 @@ const DeleteModal = ({title, postSlug, thumbnail}) => {
 
   function handleSubmit() {
     setLoading(true);
-    axios
-        .delete(api.posts.delete(postSlug), {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": "Token e1e4e61477674daab368a36c6bb0746e50c84c41"
-            }
-        })
+    authAxios
+        .delete(api.posts.delete(postSlug))
         .then(res => {
             setLoading(false);
             history.push('/')
@@ -84,7 +80,7 @@ const PostDetail = () => {
     const { postSlug } = useParams()
     const {data, loading, error} = useFetch(api.posts.retrieve(postSlug))
     return (
-        <Container text>
+        <Container text style={{ paddingTop: 10, paddingBottom: 10 }}>
             {error && <Message negative message={error} />}
             {loading && <Loader />}
             {data && (
@@ -96,7 +92,17 @@ const PostDetail = () => {
                     <Header as='h4'>Last updated: {`${new Date(data.last_updated).toLocaleDateString()}`}</Header>
                     <ReactMarkdown source={data.content} renderers={Renderers} />
                     <Divider />
-                    <DeleteModal postSlug={postSlug} title={data.title} thumbnail={data.thumbnail} />
+
+                    {data.is_author && (
+                      <>
+                        <NavLink to={`/posts/${postSlug}/update`}>
+                          <Button color='yellow'>
+                            Update
+                          </Button>
+                        </NavLink>
+                        <DeleteModal postSlug={postSlug} title={data.title} thumbnail={data.thumbnail} />
+                      </>
+                    )}
                 </div>
             )}
         </Container>
