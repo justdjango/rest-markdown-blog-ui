@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Header, Button, Container, Form } from 'semantic-ui-react'
 import { Redirect } from 'react-router-dom';
-import axios from "axios";
 import Message from "../components/Message"
-import { api } from '../api';
 import { history } from "../helpers"
 import { authenticationService } from "../services"
 
@@ -18,11 +16,8 @@ const Login = () => {
   function handleSubmit(e) {
     setLoading(true);
     e.preventDefault()
-    axios.post(api.auth.login, {
-      username, email, password
-    })
+    authenticationService.login(username, email, password)
       .then(res => {
-        localStorage.setItem("token", res.data.key)
         setLoading(false);
         history.push('/')
       })
