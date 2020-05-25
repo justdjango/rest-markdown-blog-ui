@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import {Button, Container, Divider, Header, Image, Icon, Modal} from 'semantic-ui-react'
+import {Button, Container, Divider, Header, Image, Modal} from 'semantic-ui-react'
+import ReactMarkdown from 'react-markdown'
 import axios from "axios"
 import Loader from '../components/Loader';
 import Message from '../components/Message'
@@ -67,6 +68,18 @@ const DeleteModal = ({title, postSlug, thumbnail}) => {
   )
 }
 
+const Blockquote = (props) => {
+  return (
+    <blockquote>
+    {props.value ? props.value : props.children}
+    </blockquote>
+  )
+}
+
+const Renderers = {
+  blockquote: Blockquote
+}
+
 const PostDetail = () => {
     const { postSlug } = useParams()
     const {data, loading, error} = useFetch(api.posts.retrieve(postSlug))
@@ -81,9 +94,7 @@ const PostDetail = () => {
                         {data.title}
                     </Header>
                     <Header as='h4'>Last updated: {`${new Date(data.last_updated).toLocaleDateString()}`}</Header>
-                    <p>
-                        {data.content}
-                    </p>
+                    <ReactMarkdown source={data.content} renderers={Renderers} />
                     <Divider />
                     <DeleteModal postSlug={postSlug} title={data.title} thumbnail={data.thumbnail} />
                 </div>
