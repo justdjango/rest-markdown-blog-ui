@@ -7,7 +7,6 @@ import PostList from './containers/PostList'
 import PostDetail from './containers/PostDetail'
 import PostCreate from './containers/PostCreate'
 import PostUpdate from './containers/PostUpdate'
-import PostDelete from './containers/PostDelete'
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="/create" component={PostCreate} />
           <Route exact path="/posts/:postSlug" component={PostDetail} />
           <Route path="/posts/:postSlug/update" component={PostUpdate} />
-          <Route path="/posts/:postSlug/delete" component={PostDelete} />
         </Switch>
       </Layout>
     </Router>
