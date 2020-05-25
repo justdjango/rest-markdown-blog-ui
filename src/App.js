@@ -8,6 +8,7 @@ import PostDetail from './containers/PostDetail'
 import PostCreate from './containers/PostCreate'
 import PostUpdate from './containers/PostUpdate'
 
+import PrivateRoute from './components/PrivateRoute'
 import Login from "./containers/Login"
 import Signup from "./containers/Signup"
 
@@ -17,7 +18,7 @@ function App() {
       <Layout>
         <Switch>
           <Route exact path="/" component={PostList} />
-          <Route path="/create" component={PostCreate} />
+          <PrivateRoute path="/create" component={PostCreate} />
           <Route exact path="/posts/:postSlug" component={PostDetail} />
           <Route path="/posts/:postSlug/update" component={PostUpdate} />
           <Route path='/login' component={Login} />
